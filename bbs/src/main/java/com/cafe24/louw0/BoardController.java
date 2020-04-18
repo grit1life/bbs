@@ -1,4 +1,4 @@
-package com.cafe24.louw0.controller;
+package com.cafe24.louw0;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,9 @@ public class BoardController {
 		Board board = Board.builder()
 						.title("title")
 						.build();
+		System.out.println("++++++++++++++++");
 		boardService.insertBoard(board);
 		return "NewFile";
 	}
+
 }

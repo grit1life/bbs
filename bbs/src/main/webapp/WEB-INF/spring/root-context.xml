@@ -33,5 +33,9 @@
 		destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory"
 			ref="sqlSessionFactory" />
-	</bean>	
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.cafe24.louw0" />
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean> 	
 </beans>
