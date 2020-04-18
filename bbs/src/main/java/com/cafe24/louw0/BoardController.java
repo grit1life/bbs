@@ -16,12 +16,8 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
 	public String board() {
-		Board board = Board.builder()
-						.title("title")
-						.build();
-		System.out.println("++++++++++++++++");
-		boardService.insertBoard(board);
-		return "NewFile";
+		
+		return "board";
 	}
 
 }
