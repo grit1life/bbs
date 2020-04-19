@@ -1,4 +1,4 @@
-package com.cafe24.louw0;
+package com.cafe24.louw0.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
