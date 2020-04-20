@@ -50,22 +50,16 @@
       <div class="container">
 
 		<table class="table table-hover">
-			<tr>
-				<td>제목</td>
-				<td>추천</td>
-				<td>댓글</td>
-				<td>닉네임</td>
+			<c:forEach items="${list}" var="list">
 				
+				<tr>
+					<td><a href="#">${list.boardTitle}</a></td>
+					<td>${list.boardHits}</td>
+					<td>${list.commentCount}</td>
+					<td>${list.boardWriter}</td>
+				</tr>
 				
-			</tr>
-			<tr>
-				<td>제목</td>
-				<td>추천</td>
-				<td>댓글</td>
-				<td>닉네임</td>
-				
-				
-			</tr>
+			</c:forEach>
 		</table>
         
         <nav aria-label="...">

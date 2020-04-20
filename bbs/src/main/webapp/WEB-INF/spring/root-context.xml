@@ -10,14 +10,14 @@
 			<value>com.mysql.cj.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/dev34db?useSSL=false&amp;serverTimezone=Asia/Seoul
+			<value>jdbc:mysql://louw00.cafe24.com:3306/louw00?useSSL=false&amp;serverTimezone=Asia/Seoul
 			</value>
 		</property>
 		<property name="username">
-			<value>dev34id</value>
+			<value>louw00</value>
 		</property>
 		<property name="password">
-			<value>dev34pw</value>
+			<value>leisure3</value>
 		</property>
 	</bean>
 
