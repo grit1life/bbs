@@ -10,6 +10,24 @@
 		<result property="boardContent" column="board_content"/>
 		<result property="boardHits" column="board_hits"/>
 		<result property="boardWriter" column="board_writer"/>
+		<result property="boardDate" column="board_date"/>
+		<result property="boardModiDate" column="board_modi_date"/>
+	</resultMap>
+	<resultMap type="com.cafe24.louw0.vo.BoardComment" id="boardCommentResultMap">
+		<result property="boardNo" column="board_no"/>
+		<result property="boardTitle" column="board_title"/>
+		<result property="boardContent" column="board_content"/>
+		<result property="boardHits" column="board_hits"/>
+		<result property="boardWriter" column="board_writer"/>
+		<result property="boardDate" column="board_date"/>
+		<result property="boardModiDate" column="board_modi_date"/>
+		<result property="commentNo" column="comment_no"/>
+		<result property="commentSort" column="comment_sort"/>
+		<result property="commentDepth" column="comment_depth"/>
+		<result property="commentContent" column="comment_content"/>
+		<result property="commentWriter" column="comment_writer"/>
+		<result property="commentDate" column="comment_date"/>
+		<result property="commentModiDate" column="comment_modi_date"/>
 	</resultMap>
 	
 	<select id="getBoardList" resultMap="boardResultMap">
@@ -25,9 +43,115 @@
 		GROUP BY
 			B.board_no
 	</select>
+	<select id="getBoard" parameterType="int" resultMap="boardCommentResultMap">
+		SELECT 
+			*
+		FROM
+			board AS B
+		LEFT JOIN
+			comment AS C
+			ON
+			B.board_no = C.board_no
+		WHERE
+			B.board_no = #{no}
+		ORDER BY
+			C.comment_sort ASC, comment_depth ASC
+	</select>
 	
 	<insert id="insertBoard" parameterType="com.cafe24.louw0.vo.Board">
-		INSERT INTO board (title) VALUES (#{title})
+		INSERT INTO 
+			board 
+			(
+			  board_no
+			, board_title
+			, board_content
+			, board_writer
+			, board_date) 
+		VALUES 
+			(
+				(SELECT
+					B.board_no 
+				FROM
+					board AS B
+				ORDER BY
+					B.board_no DESC
+				LIMIT 1
+				)+1
+				, #{boardTitle}
+				, #{boardContent}
+				, #{boardWriter}
+				, DATE(NOW())
+			)
 	</insert>
+	
+	<insert id="insertComment" parameterType="com.cafe24.louw0.vo.BoardComment">
+		INSERT INTO 
+			comment 
+			(
+			  comment_no
+			, board_no
+			, comment_sort
+			, comment_depth
+			, comment_content
+			, comment_writer
+			, comment_date) 
+		VALUES 
+			(
+				(SELECT 
+					C.comment_no
+				FROM 
+					comment AS C
+				ORDER BY
+					C.comment_no DESC
+				LIMIT 1
+				)+1
+			, #{boardNo}
+			, (SELECT 
+					D.comment_sort
+				FROM 
+					comment AS D
+				WHERE 
+					D.board_no = #{boardNo}
+				ORDER BY
+					D.comment_sort DESC
+				LIMIT 1
+				)+1
+			, #{commentDepth}
+			, #{commentContent}
+			, #{commentWriter}
+			, DATE(NOW())
+			);
+	</insert>
+	
+	<insert id="insertCommentC" parameterType="com.cafe24.louw0.vo.BoardComment">
+		INSERT INTO 
+			comment 
+			(
+			  comment_no
+			, board_no
+			, comment_sort
+			, comment_depth
+			, comment_content
+			, comment_writer
+			, comment_date) 
+		VALUES 
+			(
+				(SELECT 
+					C.comment_no
+				FROM 
+					comment AS C
+				ORDER BY
+					C.comment_no DESC
+				LIMIT 1
+				)+1
+			, #{boardNo}
+			, #{commentSort}
+			, #{commentDepth}
+			, #{commentContent}
+			, #{commentWriter}
+			, DATE(NOW())
+			);
+	</insert>
+	
 
 </mapper>

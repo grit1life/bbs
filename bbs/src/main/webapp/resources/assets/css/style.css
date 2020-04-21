@@ -2197,3 +2197,24 @@ section {
 #footer .credits a {
   color: #a2cce3;
 }
+.board-date{
+	color: #c0c0c0;
+}
+.board-title{
+	font-size: 20px;
+}
+.board{
+	padding: 30px !important;
+}
+.board-content{
+	min-height: 400px;
+}
+.container{
+	max-width: 730px;
+}
+.comment-comment{
+	display: none;
+}
+.boardTitle{
+	width: 100%;
+}

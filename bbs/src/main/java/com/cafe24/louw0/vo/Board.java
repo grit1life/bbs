@@ -13,5 +13,7 @@ public class Board {
 	private String boardContent;
 	private String boardHits;
 	private String boardWriter;
+	private String boardDate;
+	private String boardModiDate;
 	private String commentCount;
 }

@@ -15,3 +15,8 @@
 
   <!-- Template Main JS File -->
   <script src=<c:url value="/resources/assets/js/main.js"/>></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
+  <script src=<c:url value="/resources/assets/vendor/summernote/summernote-ko-KR.min.js"/>></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> 
