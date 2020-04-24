@@ -1,5 +1,7 @@
 package com.cafe24.louw0.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,11 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafe24.louw0.service.BoardService;
 import com.cafe24.louw0.vo.Board;
 import com.cafe24.louw0.vo.BoardComment;
+import com.cafe24.louw0.vo.Paging;
 
 @Controller
 public class BoardController {
@@ -21,8 +25,26 @@ public class BoardController {
 	
 	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
 	public String boardList(Model model) {
-		model.addAttribute("list", boardService.getBoardList());
+		int page = 1;
+		Paging<Board> paging = boardService.getBoardList(page);
+		model.addAttribute("list", paging.getList());
+		model.addAttribute("currentPage", paging.getCurrentPage());
+		model.addAttribute("startPage", paging.getStartPage());
+		model.addAttribute("endPage", paging.getEndPage());
+		model.addAttribute("lastPage", paging.getLastPage());
 		return "boardList";
+	}
+	
+	@RequestMapping(value = "/boardList", method = RequestMethod.POST)
+	public String boardList(Model model
+				,@RequestParam(value="page") int page){
+		Paging<Board> paging = boardService.getBoardList(page);
+		model.addAttribute("list", paging.getList());
+		model.addAttribute("currentPage", paging.getCurrentPage());
+		model.addAttribute("startPage", paging.getStartPage());
+		model.addAttribute("endPage", paging.getEndPage());
+		model.addAttribute("lastPage", paging.getLastPage());
+		return "boardListPage";
 	}
 	
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
@@ -41,24 +63,22 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "writeComment", method = RequestMethod.POST)
-	public String writeComment(BoardComment boardC) {
+	public String writeComment(BoardComment boardC, HttpSession session) {
 		
-		boardC.setCommentWriter("홍길동"); //임시값 세션
+		String nickname = (String)session.getAttribute("nickname");
+		boardC.setCommentWriter(nickname); 
 		boardService.insertComment(boardC);
-		
 		
 		return "redirect:/board?no="+boardC.getBoardNo();
 	}
 	
 	@RequestMapping(value = "writeCommentC", method = RequestMethod.POST)
-	public String writeCommentC(@ModelAttribute BoardComment boardC) {
-		
-		System.out.println(boardC);
-		System.out.println(boardC.getBoardNo());
-		boardC.setCommentWriter("홍길동"); //임시값 세션
+	public @ResponseBody int writeCommentC(@ModelAttribute BoardComment boardC, HttpSession session) {
+		String nickname = (String)session.getAttribute("nickname");
+		boardC.setCommentWriter(nickname); 
 		boardService.insertCommentC(boardC);
 		
-		return "aa";
+		return 1;
 	}
 	
 	@RequestMapping(value = "writeBoard", method=RequestMethod.GET)
@@ -67,9 +87,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "writeBoard", method=RequestMethod.POST)
-	public String writeBoard(Board board) {
-		System.out.println(board);
-		board.setBoardWriter("홍길동"); //임시값 세션
+	public String writeBoard(Board board, HttpSession session) {
+		String nickname = (String)session.getAttribute("nickname");
+		board.setBoardWriter(nickname); 
 		boardService.insertBoard(board);
 		return "redirect:/boardList";
 	}

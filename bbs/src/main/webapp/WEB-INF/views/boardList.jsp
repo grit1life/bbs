@@ -47,41 +47,9 @@
 
     <!-- ======= Portfolio Section ======= -->
     <section class="portfolio">
-      <div class="container">
 
-		<table class="table table-hover">
-			<c:forEach items="${list}" var="list">
-				
-				<tr>
-					<td><a href="board?no=${list.boardNo}">${list.boardTitle}</a></td>
-					<td>${list.boardHits}</td>
-					<td>${list.commentCount}</td>
-					<td>${list.boardWriter}</td>
-				</tr>
-				
-			</c:forEach>
-		</table>
-        
-        <nav aria-label="...">
-		  <ul class="pagination">
-		    <li class="page-item disabled">
-		      <span class="page-link">Previous</span>
-		    </li>
-		    <li class="page-item"><a class="page-link" href="#">1</a></li>
-		    <li class="page-item active">
-		      <span class="page-link">
-		        2
-		        <span class="sr-only">(current)</span>
-		      </span>
-		    </li>
-		    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		    <li class="page-item">
-		      <a class="page-link" href="#">Next</a>
-		    </li>
-		  </ul>
-		</nav>
+		<c:import url="boardListPage.jsp"></c:import>
 
-      </div>
     </section><!-- End Portfolio Section -->
 
   </main><!-- End #main -->
@@ -93,6 +61,27 @@
   <!-- script Files -->
   <c:import url="fragments/script.jsp"></c:import>
 
+  <script type="text/javascript">
+  
+	  $(document).on('click', '.page-click',  function(){
+		 console.log($(this).data('set'))	
+		  $.ajax({
+		  		  url: "boardList"
+		  		, method: "POST"
+		  		, data : {page : $(this).data('set')}
+		  		, dataType : "html"
+		  	}).done(function(data){
+		  		
+		  		$('#board-container').remove();
+		  		
+				$('.portfolio').append(data);
+				
+				
+		  	}).fail(function(){
+		  		console.log(2)
+		  	})
+		  })
+  </script>
 </body>
 
 </html>

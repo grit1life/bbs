@@ -2205,6 +2205,7 @@ section {
 }
 .board{
 	padding: 30px !important;
+	width: 100%;
 }
 .board-content{
 	min-height: 400px;
@@ -2217,4 +2218,11 @@ section {
 }
 .boardTitle{
 	width: 100%;
+}
+.login{
+	width: 49%;
+	display: inline-block;
+}
+.bookmark{
+	cursor: pointer;
 }

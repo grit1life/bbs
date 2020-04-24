@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cafe24.louw0.mapper.MemberMapper">
+	<resultMap type="com.cafe24.louw0.vo.Member" id="memberResultMap">
+		<result property="mId" column="m_id"/>
+		<result property="mPw" column="m_pw"/>
+		<result property="mEmail" column="m_email"/>
+		<result property="mName" column="m_name"/>
+		<result property="mNickname" column="m_nickname"/>
+		<result property="mLevel" column="m_level"/>
+	</resultMap>
+	<select id="checkId" parameterType="String" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM 
+			member
+		WHERE
+			m_id = #{mId}
+	</select>
+	<select id="checkNickname" parameterType="String" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM
+			member
+		WHERE
+			m_nickname = #{mNickname}
+	</select>
+	<insert id="insertMember" parameterType="com.cafe24.louw0.vo.Member">
+		INSERT INTO
+			member
+			( m_id
+			, m_pw
+			, m_email
+			, m_name
+			, m_nickname
+			)
+		VALUES
+			(
+			  #{mId}
+			, #{mPw}
+			, #{mEmail}
+			, #{mName}
+			, #{mNickname}
+			)
+	</insert>
+	
+	<select id="checkLogin" parameterType="com.cafe24.louw0.vo.Member" resultMap="memberResultMap">
+		SELECT 
+			*
+		FROM
+			member
+		WHERE
+			m_id = #{mId}
+	</select>
+</mapper>

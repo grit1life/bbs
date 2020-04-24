@@ -10,9 +10,11 @@ import com.cafe24.louw0.vo.BoardComment;
 @Repository(value = "boardMapper")
 public interface BoardMapper {
 	
-	public List<Board> getBoardList();
+	public List<Board> getBoardList(int column);
+	public int getBoardLast();
 	
 	public List<BoardComment> getBoard(int no);
+	public int insertHits(int no);
 	
 	public int insertComment(BoardComment boardComment);
 	

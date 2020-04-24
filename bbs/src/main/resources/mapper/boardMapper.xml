@@ -30,7 +30,7 @@
 		<result property="commentModiDate" column="comment_modi_date"/>
 	</resultMap>
 	
-	<select id="getBoardList" resultMap="boardResultMap">
+	<select id="getBoardList" parameterType="int" resultMap="boardResultMap">
 		SELECT 
 			* 
 			,COUNT(1) AS commentCount
@@ -42,10 +42,18 @@
 			B.board_no = C.board_no
 		GROUP BY
 			B.board_no
+		LIMIT #{column}, 10
+	</select>
+	<select id="getBoardLast" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM
+			board
 	</select>
 	<select id="getBoard" parameterType="int" resultMap="boardCommentResultMap">
 		SELECT 
 			*
+			,IF(ISNULL(C.comment_modi_date), C.comment_date, C.comment_modi_date) AS regidate
 		FROM
 			board AS B
 		LEFT JOIN
@@ -55,9 +63,16 @@
 		WHERE
 			B.board_no = #{no}
 		ORDER BY
-			C.comment_sort ASC, comment_depth ASC
+			C.comment_sort, C.comment_depth, regidate
 	</select>
-	
+	<insert id="insertHits" parameterType="int">
+		UPDATE 
+			board
+		SET 
+			board_hits = board_hits+1
+		WHERE 
+			board_no=#{no}
+	</insert>
 	<insert id="insertBoard" parameterType="com.cafe24.louw0.vo.Board">
 		INSERT INTO 
 			board 
@@ -80,7 +95,7 @@
 				, #{boardTitle}
 				, #{boardContent}
 				, #{boardWriter}
-				, DATE(NOW())
+				, NOW()
 			)
 	</insert>
 	
@@ -119,7 +134,7 @@
 			, #{commentDepth}
 			, #{commentContent}
 			, #{commentWriter}
-			, DATE(NOW())
+			, NOW()
 			);
 	</insert>
 	
@@ -149,9 +164,8 @@
 			, #{commentDepth}
 			, #{commentContent}
 			, #{commentWriter}
-			, DATE(NOW())
+			, NOW()
 			);
 	</insert>
-	
 
 </mapper>

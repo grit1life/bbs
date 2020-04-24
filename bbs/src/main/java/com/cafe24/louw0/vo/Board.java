@@ -11,9 +11,9 @@ public class Board {
 	private String boardNo;
 	private String boardTitle;
 	private String boardContent;
-	private String boardHits;
+	private int boardHits;
 	private String boardWriter;
 	private String boardDate;
 	private String boardModiDate;
-	private String commentCount;
+	private int commentCount;
 }
