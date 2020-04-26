@@ -43,7 +43,7 @@
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
 
-                <h3 class="profile-username text-center">${id}</h3>
+                <h3 class="profile-username text-center">${nickname}</h3>
 
                 <p class="text-muted text-center">Software Engineer</p>
 
@@ -79,7 +79,7 @@
               <div class="card-body">
                 <div class="tab-content">
                   <div class="active tab-pane" id="activity">
-                   
+                   	
                     <!-- /.post -->
                   </div>
                   <!-- /.tab-pane -->

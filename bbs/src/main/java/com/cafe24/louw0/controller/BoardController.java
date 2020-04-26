@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafe24.louw0.service.BoardService;
+import com.cafe24.louw0.service.BookmarkService;
 import com.cafe24.louw0.vo.Board;
 import com.cafe24.louw0.vo.BoardComment;
+import com.cafe24.louw0.vo.Bookmark;
 import com.cafe24.louw0.vo.Paging;
 
 @Controller
@@ -22,6 +24,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private BookmarkService bookmarkService;
 	
 	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
 	public String boardList(Model model) {
@@ -50,16 +55,39 @@ public class BoardController {
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
 	public String board( Model model
 			,@RequestParam(value = "no", defaultValue = "0") int no
-			,RedirectAttributes redirectAttributes) {
+			,RedirectAttributes redirectAttributes
+			,HttpSession session) {
 		String url;
 		if(no < 1) {
 			url = "redirect:/boardList";
 		}else {
 			url = "board";
 		}
+		
+		String sId = (String) session.getAttribute("id");
+		model.addAttribute("bookmark", bookmarkService.selectBookmark(Bookmark.builder() 
+																			.mId(sId)
+																			.boardNo(no).build()));
 		model.addAttribute("board", boardService.getBoard(no));
 		
 		return url;
+	}
+	
+	@RequestMapping(value = "changeBookmark", method = RequestMethod.POST)
+	public @ResponseBody int changeBookmark(@RequestParam(value = "boardNo") int boardNo 
+			, @RequestParam(value = "boolBookmark") int boolBookmark
+			, HttpSession session) {
+		String sId = (String) session.getAttribute("id");
+		Bookmark bookmark = Bookmark.builder()
+									.mId(sId)
+									.boardNo(boardNo).build();
+		int result = 0;
+		if(boolBookmark==1) {
+			bookmarkService.deleteBookmark(bookmark);
+		}else {
+			result = bookmarkService.insertBookmark(bookmark);
+		}
+		return result;
 	}
 	
 	@RequestMapping(value = "writeComment", method = RequestMethod.POST)

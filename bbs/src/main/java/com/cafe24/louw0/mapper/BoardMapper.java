@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cafe24.louw0.vo.Board;
 import com.cafe24.louw0.vo.BoardComment;
+import com.cafe24.louw0.vo.Bookmark;
+import com.cafe24.louw0.vo.Member;
 
 @Repository(value = "boardMapper")
 public interface BoardMapper {
@@ -21,4 +23,7 @@ public interface BoardMapper {
 	public int insertCommentC(BoardComment boardComment);
 	
 	public int insertBoard(Board board);
+	
+	public List<Board> getBookmarkBoard(Member member);
+	public int getBookmarkBoardCnt(Member member);
 }

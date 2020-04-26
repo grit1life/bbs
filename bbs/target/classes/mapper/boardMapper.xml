@@ -168,4 +168,30 @@
 			);
 	</insert>
 
+	<select id="getBookmarkBoard" parameterType="com.cafe24.louw0.vo.Member" resultMap="boardResultMap">
+		SELECT
+		 *
+		FROM
+			bookmark AS BM
+		INNER JOIN
+			board AS B
+			ON
+			B.board_no = BM.board_no
+		WHERE 
+			m_id = #{mId}
+		ORDER BY
+			bookmark_no DESC
+	</select>
+	<select id="getBookmarkBoardCnt" parameterType="com.cafe24.louw0.vo.Member" resultType="int">
+		SELECT
+		 	COUNT(1)
+		FROM
+			bookmark AS BM
+		INNER JOIN
+			board AS B
+			ON
+			B.board_no = BM.board_no
+		WHERE 
+			m_id = #{mId}
+	</select>
 </mapper>
