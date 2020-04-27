@@ -1,6 +1,5 @@
 package com.cafe24.louw0.vo;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,11 +8,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Board {
-	private String boardNo;
+	private int boardNo;
 	private String boardTitle;
 	private String boardContent;
 	private int boardHits;
-	private String boardWriter;
+	private String mId;
+	private String mNickname;
 	private String boardDate;
 	private String boardModiDate;
 	private int commentCount;

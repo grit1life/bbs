@@ -2207,14 +2207,20 @@ section {
 	padding: 30px !important;
 	width: 100%;
 }
+
 .board-content{
 	min-height: 400px;
+	width: 670px;
 }
 .container{
 	max-width: 730px;
 }
 .comment-comment{
 	display: none;
+}
+.board-comment-wrap{
+	padding: 30px !important;
+	width: 80%;
 }
 .boardTitle{
 	width: 100%;

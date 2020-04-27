@@ -41,11 +41,11 @@ public class MemberService {
 	
 
 	public Paging<Board> getBookmarkBoard(String mId, int page){
-		int column = (page-1)*10;
-		Member member = Member.builder()
-								.mId(mId)
-								.column(column).build(); 
-		int cnt = boardMapper.getBookmarkBoardCnt(member);
+		int column = (page-1)*10; 
+		Member member = new Member();
+		member.setMId(mId);
+		member.setColumn(column);
+		int cnt = boardMapper.getBookmarkBoardCnt(mId);
 		List<Board> list = boardMapper.getBookmarkBoard(member);
 		Paging<Board> paging = new Paging<Board>(list, page, cnt);
 		return paging;

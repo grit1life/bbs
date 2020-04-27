@@ -44,8 +44,8 @@ public class MemberController {
 		 Member resultMb = memberService.checkLogin(member.getMId());
 		 boolean passMatch = passEncoder.matches(member.getMPw(), resultMb.getMPw());
 		 int result;
+		 HttpSession session = request.getSession();
 		 if(resultMb!=null && passMatch) {
-			 HttpSession session = request.getSession();
 			 session.setAttribute("id", resultMb.getMId());
 			 session.setAttribute("nickname", resultMb.getMNickname());
 			 session.setAttribute("level", resultMb.getMLevel());
@@ -65,8 +65,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "myPage", method = RequestMethod.GET)
-	public String myPage(Model model, HttpSession session,
-			@RequestParam (value = "page", required = false, defaultValue = "1") int page) {
+	public String myPage(Model model, HttpSession session) {
+		int page = 1;
 		model.addAttribute("nickname", session.getAttribute("nickname"));
 		String sId = (String) session.getAttribute("id");
 		Paging<Board> paging = memberService.getBookmarkBoard(sId, page);
@@ -76,5 +76,18 @@ public class MemberController {
 		model.addAttribute("endPage", paging.getEndPage());
 		model.addAttribute("lastPage", paging.getLastPage());
 		return "myPage";
+	}
+	@RequestMapping(value = "myPage", method = RequestMethod.POST)
+	public String myPage(Model model, HttpSession session,
+			@RequestParam (value = "page") int page) {
+		model.addAttribute("nickname", session.getAttribute("nickname"));
+		String sId = (String) session.getAttribute("id");
+		Paging<Board> paging = memberService.getBookmarkBoard(sId, page);
+		model.addAttribute("list", paging.getList());
+		model.addAttribute("currentPage", paging.getCurrentPage());
+		model.addAttribute("startPage", paging.getStartPage());
+		model.addAttribute("endPage", paging.getEndPage());
+		model.addAttribute("lastPage", paging.getLastPage());
+		return "boardListPage";
 	}
 }

@@ -9,7 +9,8 @@
 		<result property="boardTitle" column="board_title"/>
 		<result property="boardContent" column="board_content"/>
 		<result property="boardHits" column="board_hits"/>
-		<result property="boardWriter" column="board_writer"/>
+		<result property="mId" column="m_id"/>
+		<result property="mNickname" column="m_nickname"/>
 		<result property="boardDate" column="board_date"/>
 		<result property="boardModiDate" column="board_modi_date"/>
 	</resultMap>
@@ -18,24 +19,35 @@
 		<result property="boardTitle" column="board_title"/>
 		<result property="boardContent" column="board_content"/>
 		<result property="boardHits" column="board_hits"/>
-		<result property="boardWriter" column="board_writer"/>
+		<result property="mId" column="m_id"/>
+		<result property="mNickname" column="m_nickname"/>
 		<result property="boardDate" column="board_date"/>
 		<result property="boardModiDate" column="board_modi_date"/>
 		<result property="commentNo" column="comment_no"/>
 		<result property="commentSort" column="comment_sort"/>
 		<result property="commentDepth" column="comment_depth"/>
 		<result property="commentContent" column="comment_content"/>
-		<result property="commentWriter" column="comment_writer"/>
 		<result property="commentDate" column="comment_date"/>
 		<result property="commentModiDate" column="comment_modi_date"/>
 	</resultMap>
 	
 	<select id="getBoardList" parameterType="int" resultMap="boardResultMap">
 		SELECT 
-			* 
-			,COUNT(1) AS commentCount
+			  B.board_no
+			, B.board_title
+			, B.board_content
+			, B.board_hits
+			, B.m_id
+			, M.m_nickname
+			, B.board_date
+			, B.board_modi_date
+			, COUNT(C.comment_no) AS commentCount
 		FROM 
 			board AS B
+		INNER JOIN
+			member AS M
+			ON
+			B.m_id = M.m_id
 		LEFT JOIN
 			comment AS C
 			ON
@@ -52,18 +64,52 @@
 	</select>
 	<select id="getBoard" parameterType="int" resultMap="boardCommentResultMap">
 		SELECT 
-			*
-			,IF(ISNULL(C.comment_modi_date), C.comment_date, C.comment_modi_date) AS regidate
+		      B.board_no
+			, B.board_title
+			, B.board_content
+			, B.board_hits
+			, B.m_id
+			, B.board_date
+			, B.board_modi_date
+			, M.m_nickname
+			, SQ.comment_no
+			, SQ.comment_sort
+			, SQ.comment_depth
+			, SQ.comment_content
+			, SQ.m_id AS cMId
+			, SQ.m_nickname AS cMNickname
+			, SQ.comment_date
+			, SQ.comment_modi_date
 		FROM
 			board AS B
 		LEFT JOIN
-			comment AS C
+			member AS M
 			ON
-			B.board_no = C.board_no
+			B.m_id = M.m_id
+		LEFT JOIN (
+					SELECT 
+						  C.comment_no
+						, C.board_no
+						, C.comment_sort
+						, C.comment_depth
+						, C.comment_content
+						, C.m_id
+						, CM.m_nickname
+						, C.comment_date
+						, C.comment_modi_date
+					FROM
+						comment AS C
+					INNER JOIN
+						member AS CM
+						ON
+						CM.m_id = C.m_id
+					) AS SQ
+			ON
+			SQ.board_no = B.board_no 
 		WHERE
 			B.board_no = #{no}
 		ORDER BY
-			C.comment_sort, C.comment_depth, regidate
+			SQ.comment_sort, SQ.comment_depth, IF(ISNULL(SQ.comment_modi_date), SQ.comment_date, SQ.comment_modi_date)
 	</select>
 	<insert id="insertHits" parameterType="int">
 		UPDATE 
@@ -80,7 +126,7 @@
 			  board_no
 			, board_title
 			, board_content
-			, board_writer
+			, m_id
 			, board_date) 
 		VALUES 
 			(
@@ -94,11 +140,19 @@
 				)+1
 				, #{boardTitle}
 				, #{boardContent}
-				, #{boardWriter}
+				, #{mId}
 				, NOW()
 			)
 	</insert>
-	
+	<update id="modiBoard" parameterType="com.cafe24.louw0.vo.Board">
+		UPDATE 
+			board
+		SET
+			board_content=#{boardContent}
+			, board_modi_date=NOW()
+		WHERE
+			board_no = #{boardNo}
+	</update>
 	<insert id="insertComment" parameterType="com.cafe24.louw0.vo.BoardComment">
 		INSERT INTO 
 			comment 
@@ -108,7 +162,7 @@
 			, comment_sort
 			, comment_depth
 			, comment_content
-			, comment_writer
+			, m_id
 			, comment_date) 
 		VALUES 
 			(
@@ -133,7 +187,7 @@
 				)+1
 			, #{commentDepth}
 			, #{commentContent}
-			, #{commentWriter}
+			, #{mId}
 			, NOW()
 			);
 	</insert>
@@ -147,7 +201,7 @@
 			, comment_sort
 			, comment_depth
 			, comment_content
-			, comment_writer
+			, m_id
 			, comment_date) 
 		VALUES 
 			(
@@ -163,24 +217,36 @@
 			, #{commentSort}
 			, #{commentDepth}
 			, #{commentContent}
-			, #{commentWriter}
+			, #{mId}
 			, NOW()
 			);
 	</insert>
 
 	<select id="getBookmarkBoard" parameterType="com.cafe24.louw0.vo.Member" resultMap="boardResultMap">
 		SELECT
-		 *
+			B.board_no
+			, B.board_title
+			, B.board_content
+			, B.board_hits
+			, B.m_id
+			, M.m_nickname
+			, B.board_date
+			, B.board_modi_date
 		FROM
 			bookmark AS BM
 		INNER JOIN
 			board AS B
+		INNER JOIN
+			member AS M
 			ON
 			B.board_no = BM.board_no
+			AND 
+			B.m_id = M.m_id
 		WHERE 
-			m_id = #{mId}
+			BM.m_id = #{mId}
 		ORDER BY
-			bookmark_no DESC
+			BM.bookmark_no DESC
+		LIMIT #{column}, 10
 	</select>
 	<select id="getBookmarkBoardCnt" parameterType="com.cafe24.louw0.vo.Member" resultType="int">
 		SELECT
@@ -192,6 +258,6 @@
 			ON
 			B.board_no = BM.board_no
 		WHERE 
-			m_id = #{mId}
+			BM.m_id = #{mId}
 	</select>
 </mapper>

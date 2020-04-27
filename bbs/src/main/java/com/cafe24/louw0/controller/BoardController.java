@@ -66,10 +66,10 @@ public class BoardController {
 		
 		String sId = (String) session.getAttribute("id");
 		model.addAttribute("bookmark", bookmarkService.selectBookmark(Bookmark.builder() 
-																			.mId(sId)
-																			.boardNo(no).build()));
+																			.boardNo(no)
+																			.mId(sId).build()));
 		model.addAttribute("board", boardService.getBoard(no));
-		
+		model.addAttribute("sId", sId);
 		return url;
 	}
 	
@@ -93,20 +93,22 @@ public class BoardController {
 	@RequestMapping(value = "writeComment", method = RequestMethod.POST)
 	public String writeComment(BoardComment boardC, HttpSession session) {
 		
-		String nickname = (String)session.getAttribute("nickname");
-		boardC.setCommentWriter(nickname); 
+		String mId = (String)session.getAttribute("id");
+		boardC.setMId(mId); 
 		boardService.insertComment(boardC);
 		
 		return "redirect:/board?no="+boardC.getBoardNo();
 	}
 	
 	@RequestMapping(value = "writeCommentC", method = RequestMethod.POST)
-	public @ResponseBody int writeCommentC(@ModelAttribute BoardComment boardC, HttpSession session) {
-		String nickname = (String)session.getAttribute("nickname");
-		boardC.setCommentWriter(nickname); 
+	public String writeCommentC(Model model,
+			@ModelAttribute BoardComment boardC, HttpSession session) {
+
+		String mId = (String)session.getAttribute("id");
+		boardC.setMId(mId); 
 		boardService.insertCommentC(boardC);
-		
-		return 1;
+		model.addAttribute("board", boardService.getBoard(boardC.getBoardNo()));
+		return "commentC";
 	}
 	
 	@RequestMapping(value = "writeBoard", method=RequestMethod.GET)
@@ -116,10 +118,14 @@ public class BoardController {
 	
 	@RequestMapping(value = "writeBoard", method=RequestMethod.POST)
 	public String writeBoard(Board board, HttpSession session) {
-		String nickname = (String)session.getAttribute("nickname");
-		board.setBoardWriter(nickname); 
+		String mId = (String)session.getAttribute("id");
+		board.setMId(mId);  
 		boardService.insertBoard(board);
 		return "redirect:/boardList";
 	}
-
+	
+	@RequestMapping(value = "modiBoard", method=RequestMethod.POST)
+	public @ResponseBody int modiBoard(Board board) {
+		return boardService.modiBoard(board);
+	}
 }

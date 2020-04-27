@@ -36,10 +36,10 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Our Portfolio</h2>
+          <h2>게시판</h2>
           <ol>
-            <li><a href="wirteBoard">Home</a></li>
-            <li>Our Portfolio</li>
+            <li><a href="boardList.html">게시판 목록</a></li>
+            <li><a href="writdBoard.html">글쓰기</a></li>
           </ol>
         </div>
 
@@ -51,8 +51,11 @@
 	<section class="why-us section-bg" data-aos="fade-up" date-aos-delay="200">
       <div class="container">
         <div class="row" >
-          <div class="board col-lg-6 d-flex flex-column justify-content-center p-5e">
-			<div class=" ">${board[0].boardWriter}</div>
+          <div class="board">
+			<div style="display:inline-block">${board[0].MNickname}</div>
+				<c:if test="${board[0].MId==sId}">
+					<button type="button" class="modi-btn btn btn-success" style="display:inline-block; float:right">글수정</button>
+				</c:if>
 			<div class="board-date">${board[0].boardDate}</div>
 			<div class="board-date">${board[0].boardModiDate}</div>
 		  </div>
@@ -60,7 +63,7 @@
       </div>
       <div class="container">
         <div class="row" >
-          <div class="board" style="width: 100%">
+          <div class="board" >
 			<div class="board-title" style="display:inline-block;">${board[0].boardTitle}</div>
 			<div class="bookmark" style="display:inline-block; float: right">
 				<c:if test="${bookmark == 1}">
@@ -79,7 +82,7 @@
       </div>
       <div class="container" style="margin-bottom: 20px">
         <div class="row" >
-          <div class="board">
+          <div id="board" class="board">
 			
 			<div class="board-content">
 				${board[0].boardContent}
@@ -105,35 +108,10 @@
 	        </div>
 	      </div>
 	  </form>
-      <c:if test="${board[0].commentNo!=null &&board[0].commentNo!=''}">
-	      <c:forEach var="i" begin="0" end="${fn:length(board)-1}">
-		      <div class="container">
-		        <div class="row">
-		          <!-- 댓글 들여쓰기 -->
-		          <c:forEach begin="1" end="${board[i].commentDepth-1}">
-		          	<div style="width:30px"></div>  
-		          </c:forEach>
-			          <div class="board">
-				          <form class="writeCommentC" method="post">
-								<div class="comment-writer">${board[i].commentWriter}</div>
-								<div class="comment-date">${board[i].commentDate}</div>
-								<div class="comment-modi-date">${board[i].commentModiDate}</div>
-					            <div class="comment-content">${board[i].commentContent}</div>
-					            
-					            <button type="button" class="comment-btn btn btn-success">답글</button> 
-					            <input type="hidden" name="boardNo" value="${board[i].boardNo}"/>
-			      				<input type="hidden" name="commentSort" value="${board[i].commentSort}"/> 
-			      				<input type="hidden" name="commentDepth" value="${board[i].commentDepth+1}"/> 
-					            <div class="comment-comment" style="width: 500px">
-					            	<textarea class="summernote " name="commentContent"></textarea>
-					           		<button type="button" class="regist-comment-btn btn btn-success">등록</button> 
-					            </div>
-				          </form>
-			          </div>
-		        </div>
-		      </div>
-	      </c:forEach>
-      </c:if>
+	  
+	<div id="comment-container">
+	      <c:import url="commentC.jsp"></c:import>
+	</div>
     </section><!-- End Portfolio Section -->
 
   </main><!-- End #main -->
@@ -145,7 +123,29 @@
   <!-- script Files -->
   <c:import url="fragments/script.jsp"></c:import>
    <script>
-     commentClick();
+   summerNoteClick();
+     
+     $(document).on('click', '.modi-btn', function(){
+    	 if($('#modi-content').length){
+    		 const boardNo = ${board[0].boardNo}
+    		 const modiContent = $('#modi-content').val()
+    		 $.ajax({
+    			   url : "modiBoard"
+    			 , method : "POST"
+    			 , data : {boardNo : boardNo, boardContent : modiContent}
+    		 	 , dataType : "json"
+    		 }).done(function(){
+        		 $('.board-content').remove();
+        		 $('#board').append('<div class="board-content">'+modiContent+'</div>');
+    		 }).fail(function(){
+    			 console.log("실패")
+    		 })
+    	 }else{
+	    	 $('.board-content').remove();
+	    	 $('#board').append('<div class="board-content"><textarea id="modi-content" class="summernote">${board[0].boardContent}</textarea></div>')
+	    	 summerNoteClick();
+    	 }
+     })
      
    	 let boolBookmark = ${bookmark}
      $(document).on('click', '.bookmark', function(){
@@ -179,71 +179,30 @@
      $(document).on('click', '.regist-comment-btn', function(){
 	    	
     	 const commentForm = $(this).parents('.writeCommentC')
+    	
     	 const formData = commentForm.serialize();
     	 $.ajax({
 	    	 url: "writeCommentC"
 	    	 ,method: "POST"
 	    	 ,data: formData
+	    	 ,dataType : "html"
 	     }).done(function(data){
-	    	 const toDate = new Date();
-			 let toYear = toDate.getFullYear();
-			 let toMonth = toDate.getMonth()+1;
-			 let toDay = toDate.getDate();
-			 let toHour = toDate.getHours();
-			 let toMinutes = toDate.getMinutes();
-			 let toSeconds = toDate.getSeconds()
-			 toYear = toYear<10 ? '0'+toYear : toYear;
-			 toMonth = toMonth<10 ? '0'+toMonth : toMonth;
-			 toDay = toDay<10 ? '0'+toDay : toDay;
-			 toHour = toHour<10 ? '0'+toHour : toHour;
-			 toMinutes = toMinutes<10 ? '0'+toMinutes : toMinutes;
-			 toSeconds = toSeconds<10 ? '0'+toSeconds : toSeconds;
-	    	 const date = toYear+'-'+toMonth+'-'+toDay+' '+toHour+':'+toMinutes
-			 
-	    	 let html = '<div class="container">'
-			 html += '<div class="row">'
+	    	 $('#comment-comment').remove();
+	    	 $('#comment-container').append(data)
 
-			 const cDepth = commentForm.children('[name="commentDepth"]').val()
-			 const cBoardNo = commentForm.children('[name="boardNo"]').val()
-			 const cSort = commentForm.find('[name="commentSort"]').val()
-			 const cContent = commentForm.find('.summernote').val()
-			 for(let i=0; i<cDepth; i++){
-				 html +='<div style="width:30px"></div>'
-			 }
+	    	 //const commentArea = commentForm.children('.comment-comment')
+    		 //commentArea.css('display', 'none');
 			 
-			 html +=    '<div class="board">'
-			 html += 	   '<form class="writeCommentC" method="post">'
-			 html += 			'<div class="comment-writer">'+'홍길동'+'</div>'
-			 html += 			'<div class="comment-date">'+date+'</div>'
-			 html += 		    '<div class="comment-content">'+cContent+'</div>'
-			 html += 		    '<button type="button" class="comment-btn btn btn-success">답글</button> '
-			 html += 		    '<input type="hidden" name="boardNo" value="'+cBoardNo+'"/>'
-			 html +=      		'<input type="hidden" name="commentSort" value="'+cSort+'"/>' 
-			 html +=       		'<input type="hidden" name="commentDepth" value="'+(Number(cDepth)+1)+'"/>' 
-			 html += 		    '<div class="comment-comment" style="width: 500px">'
-			 html += 	        	'<textarea class="summernote " name="commentContent"></textarea>'
-			 html += 	        	'<button type="button" class="regist-comment-btn btn btn-success">등록</button>' 
-			 html += 		  	'</div>'
-			 html += 	  '</form>'
-			 html += 	'</div>'
-			 html +=  '</div>'
-			 html += '</div>'
-	    		 
-	    	 commentForm.parents('.container').after(html);
-			 
-			 const commentArea = commentForm.children('.comment-comment')
-    		 commentArea.css('display', 'none');
-			 
-			 commentClick();
+			 summerNoteClick();
 			 
     	 }).fail(function(){
     		 console.log("fail")
     	 })
      })
      
-     function commentClick(){
+     function summerNoteClick(){
     	 $('.summernote').summernote({
-    	       placeholder: 'Hello Bootstrap 4',
+    	       placeholder: '내용을 작성하세요',
     	       tabsize: 2,
     	       height: 200,
     	       lang: 'ko-KR'

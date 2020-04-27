@@ -35,10 +35,9 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Our Portfolio</h2>
+          <h2>게시판</h2>
           <ol>
             <li><a href="writeBoard">글쓰기</a></li>
-            <li>Our Portfolio</li>
           </ol>
         </div>
 
@@ -64,23 +63,22 @@
   <script type="text/javascript">
   
 	  $(document).on('click', '.page-click',  function(){
-		 console.log($(this).data('set'))	
 		  $.ajax({
 		  		  url: "boardList"
 		  		, method: "POST"
 		  		, data : {page : $(this).data('set')}
 		  		, dataType : "html"
-		  	}).done(function(data){
+		  }).done(function(data){
 		  		
 		  		$('#board-container').remove();
 		  		
 				$('.portfolio').append(data);
 				
 				
-		  	}).fail(function(){
+		  }).fail(function(){
 		  		console.log(2)
-		  	})
 		  })
+	   })
   </script>
 </body>
 

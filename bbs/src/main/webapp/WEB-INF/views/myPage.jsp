@@ -33,75 +33,20 @@
   <main id="main">
 
     <!-- ======= Services Section ======= -->
-    <section class="services">
+    <section class="blog" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
       <div class="container">
 
         <div class="row">
-          <div class="col-md-3">
-
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-
-                <h3 class="profile-username text-center">${nickname}</h3>
-
-                <p class="text-muted text-center">Software Engineer</p>
-
-                <ul class="list-group list-group-unbordered mb-3">
-                  <li class="list-group-item">
-                    <b>Followers</b> <a class="float-right">1,322</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Following</b> <a class="float-right">543</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Friends</b> <a class="float-right">13,287</a>
-                  </li>
-                </ul>
-
-                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-          </div>
-          <!-- /.col -->
-          <div class="col-md-9">
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="active tab-pane" id="activity">
-                   	
-                    <!-- /.post -->
-                  </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="timeline">
-                    <!-- The timeline -->
-                    <div class="timeline timeline-inverse">
-                      
-                    </div>
-                  </div>
-                  <!-- /.tab-pane -->
-
-                  <div class="tab-pane" id="settings">
-                    
-                  </div>
-                  <!-- /.tab-pane -->
-                </div>
-                <!-- /.tab-content -->
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.nav-tabs-custom -->
-          </div>
-          <!-- /.col -->
+        	<div class="col-lg-8 entries">
+        		<article class="entry">
+        			<h3 class="profile-username text-center">${nickname} Bookmark</h3>
+        		</article>
+        		<section class="portfolio">
+     				<c:import url="boardListPage.jsp"></c:import>
+        		</section>
+        	</div>
+        	
+          
         </div>
         <!-- /.row -->
             
@@ -116,7 +61,21 @@
   
   <!-- script Files -->
   <c:import url="fragments/script.jsp"></c:import>
-
+  <script type="text/javascript">
+	  $(document).on('click', '.page-click',  function(){
+		  $.ajax({
+		  		  url: "myPage"
+		  		, method: "POST"
+		  		, data : {page : $(this).data('set')}
+		  		, dataType : "html"
+		  }).done(function(data){
+		  		$('#board-container').remove();
+				$('.portfolio').append(data);
+		  }).fail(function(){
+		  		console.log(2)
+		  })
+	   })
+  </script>
 </body>
 
 </html>

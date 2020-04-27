@@ -25,5 +25,7 @@ public interface BoardMapper {
 	public int insertBoard(Board board);
 	
 	public List<Board> getBookmarkBoard(Member member);
-	public int getBookmarkBoardCnt(Member member);
+	public int getBookmarkBoardCnt(String mId);
+	
+	public int modiBoard(Board board);
 }

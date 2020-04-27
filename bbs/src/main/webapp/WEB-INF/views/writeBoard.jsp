@@ -36,10 +36,9 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Our Portfolio</h2>
+          <h2>게시판</h2>
           <ol>
-            <li><a href="index.html">Home</a></li>
-            <li>Our Portfolio</li>
+            <li><a href="boardList.html">게시판 목록</a></li>
           </ol>
         </div>
 

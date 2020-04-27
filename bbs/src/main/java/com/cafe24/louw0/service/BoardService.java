@@ -43,4 +43,8 @@ public class BoardService {
 		return boardMapper.insertBoard(board);
 	}
 	
+	public int modiBoard(Board board) {
+		return boardMapper.modiBoard(board);
+	}
+	
 }

@@ -5,7 +5,7 @@
     <div class="container">
 
       <div class="logo float-left">
-        <h1 class="text-light"><a href="."><span>Moderna</span></a></h1>
+        <h1 class="text-light"><a href="http://louw0.cafe24.com/"><span>Main</span></a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -15,7 +15,7 @@
           <li class="active"><a href=".">Home</a></li>
           <li><a href="myPage">myPage</a></li>
           <li><a href="boardList">게시판</a></li>
-          <li><a href="#">TeamProject</a></li>
+          <li><a href="http://louw0.cafe24.com/index">TeamProject</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 

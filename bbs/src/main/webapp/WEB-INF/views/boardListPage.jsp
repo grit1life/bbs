@@ -6,13 +6,14 @@
 
       <div id="board-container" class="container">
 		<table class="table table-hover">
+		<c:out value="${list[0]}"></c:out>
+		
 			<c:forEach items="${list}" var="list">
-				
 				<tr>
 					<td><a href="board?no=${list.boardNo}">${list.boardTitle}</a></td>
 					<td><span style="font-size: 7px">조회</span> ${list.boardHits}</td>
 					<td><span style="font-size: 7px">댓글</span> ${list.commentCount}</td>
-					<td>${list.boardWriter}</td>
+					<td>${list.MNickname}</td>
 				</tr>
 				
 			</c:forEach>

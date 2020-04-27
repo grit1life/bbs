@@ -12,7 +12,8 @@ public class BoardComment extends Board {
 	private int commentSort;
 	private int commentDepth;
 	private String commentContent;
-	private String commentWriter;
+	private String cMId;
+	private String cMNickname;
 	private String commentDate;
 	private String commentModiDate;
 }

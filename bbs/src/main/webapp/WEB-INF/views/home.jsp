@@ -38,13 +38,13 @@
     <!-- ======= Services Section ======= -->
     <section class="services">
       <div class="container">
-
+<!-- 
            <div class="card card-primary login">
               <div class="card-header">
                 <h3 class="card-title">관리자 권한 로그인</h3>
               </div>
-              <!-- /.card-header -->
-              <!-- form start -->
+              /.card-header
+              form start
               <form role="form" class="login-form" action="login" method="post">
                 <div class="card-body">
                   <div class="form-group">
@@ -60,14 +60,14 @@
                     <label class="form-check-label" for="admin-keep">로그인유지</label>
                   </div>
                 </div>
-                <!-- /.card-body -->
+                /.card-body
                 <div class="card-footer">
                   <button type="button" class="login-btn btn btn-primary">Submit</button>
                 </div>
               </form>
             </div>
-            
-			<div class="card card-primary login">
+             -->
+			<div class="card card-primary login" style="width: 100%">
               <div class="card-header">
                 <h3 class="card-title">로그인</h3>
               </div>
@@ -83,10 +83,10 @@
                     <label for="login-pw">Password</label>
                     <input type="password" class="form-control" id="login-pw" name="mPw" value="pw001" placeholder="">
                   </div>
-                  <div class="form-check">
+                  <!-- <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="login-keep">
                     <label class="form-check-label" for="login-keep">로그인 유지</label>
-                  </div>
+                  </div> -->
                 </div>
                 <!-- /.card-body -->
 
@@ -96,8 +96,8 @@
               </form>
             </div>
             <div style="text-align: center">
-	            <a href="#">계정찾기</a>
-	            /
+	            <!-- <a href="#">계정찾기</a>
+	            / -->
 	            <a href="signup">회원가입</a>
             </div>
 
