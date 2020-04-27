@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cafe24.louw0.mapper.BookmarkMapper">
+	<resultMap type="com.cafe24.louw0.vo.Bookmark" id="bookmarkResultMap">
+		<result property="bookmarkNo" column="bookmark_no"/>
+		<result property="mId" column="m_id"/>
+		<result property="boardNo" column="board_no"/>
+	</resultMap>
+	<select id="selectBookmark" parameterType="com.cafe24.louw0.vo.Bookmark" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM 
+			bookmark 
+		WHERE 
+			m_id=#{mId}
+			AND
+			board_no=#{boardNo}
+	</select>
+	<insert id="insertBookmark" parameterType="com.cafe24.louw0.vo.Bookmark">
+		INSERT INTO
+			bookmark
+			(m_id
+			,board_no)
+		VALUES
+			(#{mId}
+			,#{boardNo})
+	</insert>
+	<delete id="deleteBookmark" parameterType="com.cafe24.louw0.vo.Bookmark">
+		DELETE FROM 
+			bookmark
+		WHERE
+			m_id = #{mId}
+			AND
+			board_no = #{boardNo}
+	</delete>
+</mapper>

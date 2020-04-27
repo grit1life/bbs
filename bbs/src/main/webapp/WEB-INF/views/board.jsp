@@ -63,9 +63,16 @@
           <div class="board" style="width: 100%">
 			<div class="board-title" style="display:inline-block;">${board[0].boardTitle}</div>
 			<div class="bookmark" style="display:inline-block; float: right">
-				<svg class="bi bi-bookmark" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-				  <path fill-rule="evenodd" d="M8 12l5 3V3a2 2 0 00-2-2H5a2 2 0 00-2 2v12l5-3zm-4 1.234l4-2.4 4 2.4V3a1 1 0 00-1-1H5a1 1 0 00-1 1v10.234z" clip-rule="evenodd"/>
-				</svg>
+				<c:if test="${bookmark == 1}">
+					<svg class="bi bi-bookmark" width="2em" height="2em" viewBox="0 0 16 16" fill="red" xmlns="http://www.w3.org/2000/svg">
+					  <path fill-rule="evenodd" d="M8 12l5 3V3a2 2 0 00-2-2H5a2 2 0 00-2 2v12l5-3zm-4 1.234l4-2.4 4 2.4V3a1 1 0 00-1-1H5a1 1 0 00-1 1v10.234z" clip-rule="evenodd"/>
+					</svg>
+				</c:if>
+				<c:if test="${bookmark == 0}">
+					<svg class="bi bi-bookmark" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+					  <path fill-rule="evenodd" d="M8 12l5 3V3a2 2 0 00-2-2H5a2 2 0 00-2 2v12l5-3zm-4 1.234l4-2.4 4 2.4V3a1 1 0 00-1-1H5a1 1 0 00-1 1v10.234z" clip-rule="evenodd"/>
+					</svg>
+				</c:if>
 			</div>
 		  </div>
         </div>
@@ -140,8 +147,24 @@
    <script>
      commentClick();
      
-     $('.bookmark').click(function(){
-    	 $('.bi-bookmark').attr('fill', 'red');
+   	 let boolBookmark = ${bookmark}
+     $(document).on('click', '.bookmark', function(){
+    	 const boardNo = ${board[0].boardNo}
+    	 $.ajax({
+    		  url: "changeBookmark"
+    		, method: "POST"
+    		, data : {boardNo : boardNo, boolBookmark: boolBookmark}
+    		, dataType : "json"
+    	 }).done(function(result){
+    		 boolBookmark = result
+    		 if(boolBookmark){
+    			 $('.bi-bookmark').attr('fill', 'red')
+    		 }else{
+    			 $('.bi-bookmark').attr('fill', 'currentColor')
+    		 }
+    	 }).fail(function(){
+    		 console.log('error')
+    	 })
      })
 
 	 $(document).on('click', '.comment-btn', function(){

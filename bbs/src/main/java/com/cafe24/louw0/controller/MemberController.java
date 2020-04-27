@@ -10,10 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cafe24.louw0.service.MemberService;
+import com.cafe24.louw0.vo.Board;
 import com.cafe24.louw0.vo.Member;
+import com.cafe24.louw0.vo.Paging;
 
 @Controller
 public class MemberController {
@@ -62,8 +65,16 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "myPage", method = RequestMethod.GET)
-	public String myPage(Model model, HttpSession session) {
-		model.addAttribute("id", session.getAttribute("id"));
+	public String myPage(Model model, HttpSession session,
+			@RequestParam (value = "page", required = false, defaultValue = "1") int page) {
+		model.addAttribute("nickname", session.getAttribute("nickname"));
+		String sId = (String) session.getAttribute("id");
+		Paging<Board> paging = memberService.getBookmarkBoard(sId, page);
+		model.addAttribute("list", paging.getList());
+		model.addAttribute("currentPage", paging.getCurrentPage());
+		model.addAttribute("startPage", paging.getStartPage());
+		model.addAttribute("endPage", paging.getEndPage());
+		model.addAttribute("lastPage", paging.getLastPage());
 		return "myPage";
 	}
 }

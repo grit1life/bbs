@@ -1,11 +1,16 @@
 package com.cafe24.louw0.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cafe24.louw0.mapper.BoardMapper;
 import com.cafe24.louw0.mapper.MemberMapper;
+import com.cafe24.louw0.vo.Board;
 import com.cafe24.louw0.vo.Member;
+import com.cafe24.louw0.vo.Paging;
 
 @Service
 @Transactional
@@ -13,6 +18,9 @@ public class MemberService {
 
 	@Autowired
 	private MemberMapper memberMapper;
+
+	@Autowired
+	private BoardMapper boardMapper;
 	
 	public int insertMember(Member member) {
 		int idCondition = memberMapper.checkId(member.getMId());
@@ -31,4 +39,15 @@ public class MemberService {
 		return memberMapper.checkLogin(mId);
 	}
 	
+
+	public Paging<Board> getBookmarkBoard(String mId, int page){
+		int column = (page-1)*10;
+		Member member = Member.builder()
+								.mId(mId)
+								.column(column).build(); 
+		int cnt = boardMapper.getBookmarkBoardCnt(member);
+		List<Board> list = boardMapper.getBookmarkBoard(member);
+		Paging<Board> paging = new Paging<Board>(list, page, cnt);
+		return paging;
+	}
 }
