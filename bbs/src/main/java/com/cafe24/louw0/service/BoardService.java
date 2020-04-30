@@ -47,4 +47,8 @@ public class BoardService {
 		return boardMapper.modiBoard(board);
 	}
 	
+	public int deleteBoard(int no) {
+		return boardMapper.deleteBoard(no);
+	}
+	
 }

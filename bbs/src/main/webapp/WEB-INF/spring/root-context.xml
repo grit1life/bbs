@@ -41,5 +41,12 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.cafe24.louw0" />
         <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
-    </bean> 	
+    </bean> 
+    
+    <mvc:interceptors>
+    	<mvc:interceptor>
+    		<mvc:mapping path="/**"/>
+    		<bean class="com.cafe24.louw0.interceptor.CommonInterceptor"></bean>
+    	</mvc:interceptor>
+    </mvc:interceptors>
 </beans>

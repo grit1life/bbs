@@ -20,3 +20,9 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
   <script src=<c:url value="/resources/assets/vendor/summernote/summernote-ko-KR.min.js"/>></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> 
+  
+  <script type="text/javascript">
+  	$('.logout-btn').click(function(){
+  		location.href = "logout"
+  	})
+  </script>

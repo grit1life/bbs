@@ -54,6 +54,7 @@
           <div class="board">
 			<div style="display:inline-block">${board[0].MNickname}</div>
 				<c:if test="${board[0].MId==sId}">
+					<button type="button" class="delete-btn btn btn-danger" style="display:inline-block; float:right">글삭제</button>
 					<button type="button" class="modi-btn btn btn-success" style="display:inline-block; float:right">글수정</button>
 				</c:if>
 			<div class="board-date">${board[0].boardDate}</div>
@@ -145,6 +146,10 @@
 	    	 $('#board').append('<div class="board-content"><textarea id="modi-content" class="summernote">${board[0].boardContent}</textarea></div>')
 	    	 summerNoteClick();
     	 }
+     })
+     $(document).on('click', '.delete-btn', function(){
+    	 const boardNo = ${board[0].boardNo};
+    	 location.href="deleteBoard?boardNo="+boardNo;
      })
      
    	 let boolBookmark = ${bookmark}

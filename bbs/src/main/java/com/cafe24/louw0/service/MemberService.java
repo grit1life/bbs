@@ -24,7 +24,6 @@ public class MemberService {
 	
 	public int insertMember(Member member) {
 		int idCondition = memberMapper.checkId(member.getMId());
-		System.out.println(idCondition);
 		int pwCondition = memberMapper.checkNickname(member.getMNickname());
 		if(idCondition == 0 && pwCondition==0) {
 			memberMapper.insertMember(member);

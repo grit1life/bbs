@@ -46,7 +46,7 @@ public class MemberController {
 		 int result;
 		 HttpSession session = request.getSession();
 		 if(resultMb!=null && passMatch) {
-			 session.setAttribute("id", resultMb.getMId());
+			 session.setAttribute("sId", resultMb.getMId());
 			 session.setAttribute("nickname", resultMb.getMNickname());
 			 session.setAttribute("level", resultMb.getMLevel());
 			 result = 1;
@@ -55,20 +55,31 @@ public class MemberController {
 		 }
 		 return result;
 	 }
-	 
+	 @RequestMapping(value = "logout", method = RequestMethod.GET)
+	 public String logout(HttpSession session) {
+		 session.invalidate();
+		 return "home";
+	 }
 	
 	@RequestMapping(value = "ajaxSignup", method = RequestMethod.POST)
-	public @ResponseBody int ajaxSignup(@ModelAttribute Member member) {
+	public @ResponseBody int ajaxSignup(@ModelAttribute Member member, HttpSession session ) {
 		String pass = passEncoder.encode(member.getMPw());
 		member.setMPw(pass);
-		return memberService.insertMember(member);
+		int signupSuccess = memberService.insertMember(member);
+		if(signupSuccess == 0) {
+			session.setAttribute("sId", member.getMId());
+			session.setAttribute("nickname", member.getMNickname());
+		}
+		return signupSuccess;
 	}
 	
 	@RequestMapping(value = "myPage", method = RequestMethod.GET)
 	public String myPage(Model model, HttpSession session) {
 		int page = 1;
+		String sId = (String) session.getAttribute("sId");
 		model.addAttribute("nickname", session.getAttribute("nickname"));
-		String sId = (String) session.getAttribute("id");
+		model.addAttribute("sId", session.getAttribute("sId"));
+		
 		Paging<Board> paging = memberService.getBookmarkBoard(sId, page);
 		model.addAttribute("list", paging.getList());
 		model.addAttribute("currentPage", paging.getCurrentPage());
@@ -81,7 +92,7 @@ public class MemberController {
 	public String myPage(Model model, HttpSession session,
 			@RequestParam (value = "page") int page) {
 		model.addAttribute("nickname", session.getAttribute("nickname"));
-		String sId = (String) session.getAttribute("id");
+		String sId = (String) session.getAttribute("sId");
 		Paging<Board> paging = memberService.getBookmarkBoard(sId, page);
 		model.addAttribute("list", paging.getList());
 		model.addAttribute("currentPage", paging.getCurrentPage());

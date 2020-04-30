@@ -86,7 +86,7 @@
   <c:import url="fragments/script.jsp"></c:import>
 	<script>
      $('.summernote').summernote({
-       placeholder: 'Hello Bootstrap 4',
+       placeholder: '내용을 입력해주세요',
        tabsize: 2,
        height: 500,
        lang: 'ko-KR'

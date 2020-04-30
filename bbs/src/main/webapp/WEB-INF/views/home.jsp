@@ -131,8 +131,7 @@
 		  console.log(2)
 	  })
   		
-  	})	
-  
+  	})
   </script>
   
 </body>

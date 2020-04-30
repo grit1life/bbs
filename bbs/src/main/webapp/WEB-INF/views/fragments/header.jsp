@@ -14,8 +14,11 @@
         <ul>
           <li class="active"><a href=".">Home</a></li>
           <li><a href="myPage">myPage</a></li>
-          <li><a href="boardList">게시판</a></li>
+          <li><a href="boardList">bbs</a></li>
           <li><a href="http://louw0.cafe24.com/index">TeamProject</a></li>
+          <c:if test="${sId!=null}">
+          	<button class="logout-btn btn btn-success" type="button">logout</button>
+          </c:if>
         </ul>
       </nav><!-- .nav-menu -->
 

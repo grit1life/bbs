@@ -101,6 +101,7 @@ h1, h2, h3, h4, h5, h6, .font-primary {
 
 #main {
   margin-top: 80px;
+  min-height: 620px;
 }
 
 /*--------------------------------------------------------------
@@ -2231,4 +2232,11 @@ section {
 }
 .bookmark{
 	cursor: pointer;
+}
+.logout-btn{
+	margin-top: 5px;
+	padding: 2px;
+}
+.github-link{
+	color: #DDECF5
 }

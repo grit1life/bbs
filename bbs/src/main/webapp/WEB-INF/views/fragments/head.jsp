@@ -21,3 +21,5 @@
 
 <!-- summernote -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.css" rel="stylesheet">
+
+<link href="<c:url value="/resources/assets/css/all.min.css"/>" rel="stylesheet">

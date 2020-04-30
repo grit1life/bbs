@@ -28,4 +28,6 @@ public interface BoardMapper {
 	public int getBookmarkBoardCnt(String mId);
 	
 	public int modiBoard(Board board);
+	
+	public int deleteBoard(int no);
 }

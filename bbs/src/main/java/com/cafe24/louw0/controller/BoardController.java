@@ -29,8 +29,9 @@ public class BoardController {
 	private BookmarkService bookmarkService;
 	
 	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
-	public String boardList(Model model) {
+	public String boardList(Model model, HttpSession session) {
 		int page = 1;
+		model.addAttribute("sId", session.getAttribute("sId"));
 		Paging<Board> paging = boardService.getBoardList(page);
 		model.addAttribute("list", paging.getList());
 		model.addAttribute("currentPage", paging.getCurrentPage());
@@ -64,7 +65,7 @@ public class BoardController {
 			url = "board";
 		}
 		
-		String sId = (String) session.getAttribute("id");
+		String sId = (String) session.getAttribute("sId");
 		model.addAttribute("bookmark", bookmarkService.selectBookmark(Bookmark.builder() 
 																			.boardNo(no)
 																			.mId(sId).build()));
@@ -77,7 +78,7 @@ public class BoardController {
 	public @ResponseBody int changeBookmark(@RequestParam(value = "boardNo") int boardNo 
 			, @RequestParam(value = "boolBookmark") int boolBookmark
 			, HttpSession session) {
-		String sId = (String) session.getAttribute("id");
+		String sId = (String) session.getAttribute("sId");
 		Bookmark bookmark = Bookmark.builder()
 									.mId(sId)
 									.boardNo(boardNo).build();
@@ -93,7 +94,7 @@ public class BoardController {
 	@RequestMapping(value = "writeComment", method = RequestMethod.POST)
 	public String writeComment(BoardComment boardC, HttpSession session) {
 		
-		String mId = (String)session.getAttribute("id");
+		String mId = (String)session.getAttribute("sId");
 		boardC.setMId(mId); 
 		boardService.insertComment(boardC);
 		
@@ -104,7 +105,7 @@ public class BoardController {
 	public String writeCommentC(Model model,
 			@ModelAttribute BoardComment boardC, HttpSession session) {
 
-		String mId = (String)session.getAttribute("id");
+		String mId = (String)session.getAttribute("sId");
 		boardC.setMId(mId); 
 		boardService.insertCommentC(boardC);
 		model.addAttribute("board", boardService.getBoard(boardC.getBoardNo()));
@@ -112,13 +113,14 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "writeBoard", method=RequestMethod.GET)
-	public String writeBoard() {
+	public String writeBoard(Model model, HttpSession session) {
+		model.addAttribute("sId", session.getAttribute("sId"));
 		return "writeBoard";
 	}
 	
 	@RequestMapping(value = "writeBoard", method=RequestMethod.POST)
 	public String writeBoard(Board board, HttpSession session) {
-		String mId = (String)session.getAttribute("id");
+		String mId = (String)session.getAttribute("sId");
 		board.setMId(mId);  
 		boardService.insertBoard(board);
 		return "redirect:/boardList";
@@ -127,5 +129,11 @@ public class BoardController {
 	@RequestMapping(value = "modiBoard", method=RequestMethod.POST)
 	public @ResponseBody int modiBoard(Board board) {
 		return boardService.modiBoard(board);
+	}
+	
+	@RequestMapping(value = "deleteBoard", method=RequestMethod.GET)
+	public String deleteBoard(@RequestParam (value = "boardNo") int boardNo) {
+		boardService.deleteBoard(boardNo);
+		return "redirect:/boardList";
 	}
 }

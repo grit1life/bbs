@@ -6,7 +6,6 @@
 
       <div id="board-container" class="container">
 		<table class="table table-hover">
-		<c:out value="${list[0]}"></c:out>
 		
 			<c:forEach items="${list}" var="list">
 				<tr>
