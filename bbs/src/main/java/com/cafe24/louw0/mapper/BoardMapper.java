@@ -1,6 +1,7 @@
 package com.cafe24.louw0.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +30,5 @@ public interface BoardMapper {
 	
 	public int modiBoard(Board board);
 	
-	public int deleteBoard(int no);
+	public int deleteBoard(Board board);
 }

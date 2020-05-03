@@ -152,13 +152,17 @@
 			, board_modi_date=NOW()
 		WHERE
 			board_no = #{boardNo}
+			AND
+			m_id = #{mId}
 	</update>
 	
-	<delete id="deleteBoard" parameterType="int">
+	<delete id="deleteBoard" parameterType="com.cafe24.louw0.vo.Board">
 		DELETE FROM
 			board
 		WHERE
-			board_no = #{no}
+			board_no = #{boardNo}
+			AND
+			m_id= #{mId}
 	</delete>
 	
 	<insert id="insertComment" parameterType="com.cafe24.louw0.vo.BoardComment">

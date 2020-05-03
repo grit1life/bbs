@@ -1,6 +1,10 @@
 package com.cafe24.louw0.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,12 +47,18 @@ public class BoardService {
 		return boardMapper.insertBoard(board);
 	}
 	
-	public int modiBoard(Board board) {
+	public int modiBoard(Board board, HttpSession session) {
+		String sId = (String) session.getAttribute("sId");
+		board.setMId(sId);
 		return boardMapper.modiBoard(board);
 	}
 	
-	public int deleteBoard(int no) {
-		return boardMapper.deleteBoard(no);
+	public int deleteBoard(int boardNo, HttpSession session) {
+		Board board = new Board();
+		String sId = (String) session.getAttribute("sId");
+		board.setBoardNo(boardNo);
+		board.setMId(sId);
+		return boardMapper.deleteBoard(board);
 	}
 	
 }

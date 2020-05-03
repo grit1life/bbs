@@ -59,7 +59,7 @@
   
   <!-- script Files -->
   <c:import url="fragments/script.jsp"></c:import>
-
+	
   <script type="text/javascript">
   
 	  $(document).on('click', '.page-click',  function(){

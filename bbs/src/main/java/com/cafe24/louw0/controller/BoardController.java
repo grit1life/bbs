@@ -1,5 +1,7 @@
 package com.cafe24.louw0.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +56,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
-	public String board( Model model
-			,@RequestParam(value = "no", defaultValue = "0") int no
-			,RedirectAttributes redirectAttributes
-			,HttpSession session) {
+	public String board( Model model, HttpSession session
+			,@RequestParam(value = "no", defaultValue = "0") int no) {
 		String url;
 		if(no < 1) {
 			url = "redirect:/boardList";
@@ -127,13 +127,13 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "modiBoard", method=RequestMethod.POST)
-	public @ResponseBody int modiBoard(Board board) {
-		return boardService.modiBoard(board);
+	public @ResponseBody int modiBoard(Board board, HttpSession session) {
+		return boardService.modiBoard(board, session);
 	}
 	
 	@RequestMapping(value = "deleteBoard", method=RequestMethod.GET)
-	public String deleteBoard(@RequestParam (value = "boardNo") int boardNo) {
-		boardService.deleteBoard(boardNo);
+	public String deleteBoard(@RequestParam (value = "boardNo") int boardNo, HttpSession session) {
+		boardService.deleteBoard(boardNo, session);
 		return "redirect:/boardList";
 	}
 }

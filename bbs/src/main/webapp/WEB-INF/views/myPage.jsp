@@ -11,7 +11,8 @@
   <meta content="" name="descriptison">
   <meta content="" name="keywords">
 
-  <c:import url="fragments/head.jsp"></c:import>
+  
+	<jsp:include page="fragments/head.jsp"></jsp:include>
 
   <!-- =======================================================
   * Template Name: Moderna - v2.0.1
@@ -24,7 +25,7 @@
 <body>
 
   <!-- ======= Header ======= -->
-  <c:import url="fragments/header.jsp"></c:import>
+	<jsp:include page="fragments/header.jsp"></jsp:include>
   <!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
@@ -42,7 +43,7 @@
         			<h3 class="profile-username text-center">${nickname} Bookmark</h3>
         		</article>
         		<section class="portfolio">
-     				<c:import url="boardListPage.jsp"></c:import>
+  					<jsp:include page="boardListPage.jsp"></jsp:include>
         		</section>
         	</div>
         	
@@ -57,10 +58,9 @@
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
-  <c:import url="fragments/footer.jsp"></c:import>
-  
+  <jsp:include page="fragments/footer.jsp"></jsp:include>
   <!-- script Files -->
-  <c:import url="fragments/script.jsp"></c:import>
+  <jsp:include page="fragments/script.jsp"></jsp:include>
   <script type="text/javascript">
 	  $(document).on('click', '.page-click',  function(){
 		  $.ajax({

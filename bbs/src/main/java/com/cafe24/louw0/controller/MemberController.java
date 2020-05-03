@@ -1,6 +1,8 @@
 package com.cafe24.louw0.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import com.cafe24.louw0.vo.Paging;
 
 @Controller
 public class MemberController {
-	
+
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
 	
@@ -39,25 +41,19 @@ public class MemberController {
 	
 	
 	 @RequestMapping(value = "login", method = RequestMethod.POST) 
-	 public @ResponseBody int login(Member member, HttpServletRequest request) {
-		 
-		 Member resultMb = memberService.checkLogin(member.getMId());
-		 boolean passMatch = passEncoder.matches(member.getMPw(), resultMb.getMPw());
-		 int result;
-		 HttpSession session = request.getSession();
-		 if(resultMb!=null && passMatch) {
-			 session.setAttribute("sId", resultMb.getMId());
-			 session.setAttribute("nickname", resultMb.getMNickname());
-			 session.setAttribute("level", resultMb.getMLevel());
-			 result = 1;
-		 }else {
-			 result = 0;
-		 }
-		 return result;
+	 public @ResponseBody int login(Member member, HttpServletRequest request, HttpServletResponse response) {
+		 return memberService.checkLogin(member, request, response);
 	 }
 	 @RequestMapping(value = "logout", method = RequestMethod.GET)
-	 public String logout(HttpSession session) {
+	 public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		 session.invalidate();
+		 Cookie[] cookies = request.getCookies();
+		 for(int i=0; i<cookies.length; i++) {
+			 cookies[i].setMaxAge(0);
+			 cookies[i].setPath("/");
+			 response.addCookie(cookies[i]);
+		 }
+		 
 		 return "home";
 	 }
 	

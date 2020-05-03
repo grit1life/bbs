@@ -83,15 +83,16 @@
                     <label for="login-pw">Password</label>
                     <input type="password" class="form-control" id="login-pw" name="mPw" value="pw001" placeholder="">
                   </div>
-                  <!-- <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="login-keep">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="login-keep" name="loginKeep">
                     <label class="form-check-label" for="login-keep">로그인 유지</label>
-                  </div> -->
+                  </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="button" class="login-btn btn btn-primary">Submit</button>
+                	<img src="/1588330279820.jpg">
+                  	<button type="button" class="login-btn btn btn-primary">Submit</button>
                 </div>
               </form>
             </div>

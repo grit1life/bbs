@@ -13,7 +13,9 @@
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
           <li class="active"><a href=".">Home</a></li>
-          <li><a href="myPage">myPage</a></li>
+           <c:if test="${sId!=null}">
+	          <li><a href="myPage">myPage</a></li>
+          </c:if>
           <li><a href="boardList">bbs</a></li>
           <li><a href="http://louw0.cafe24.com/index">TeamProject</a></li>
           <c:if test="${sId!=null}">
