@@ -1,7 +1,9 @@
 package com.cafe24.louw0.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +15,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cafe24.louw0.captcha.ApiCaptchaNkeyResult;
 import com.cafe24.louw0.mapper.BoardMapper;
 import com.cafe24.louw0.mapper.MemberMapper;
 import com.cafe24.louw0.vo.Board;
 import com.cafe24.louw0.vo.Member;
 import com.cafe24.louw0.vo.Paging;
+import com.google.gson.Gson;
 
 @Service
 @Transactional
@@ -48,8 +52,16 @@ public class MemberService {
 		 Member resultMb = memberMapper.checkLogin(member.getMId());
 		 boolean passMatch = passEncoder.matches(member.getMPw(), resultMb.getMPw());
 		 int result;
+		 Gson gson = new Gson();
+		 Map map = new HashMap();
 		 HttpSession session = request.getSession();
-		 if(resultMb!=null && passMatch) {
+		 ApiCaptchaNkeyResult captchaResult = new ApiCaptchaNkeyResult();
+		 
+		 
+		 String cResult = captchaResult.captchakeyResult(member.getCaptchaKey(), member.getCaptchaValue());
+		 map = gson.fromJson(cResult, Map.class);
+
+		 if(resultMb!=null && passMatch && map.get("errorMessage")==null) {
 			 String sId = resultMb.getMId();
 			 String nickname = resultMb.getMNickname();
 			 String level = resultMb.getMLevel();

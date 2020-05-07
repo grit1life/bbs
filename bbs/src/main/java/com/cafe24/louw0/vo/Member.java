@@ -15,5 +15,7 @@ public class Member {
 	private String mNickname;
 	private String mLevel;
 	private String loginKeep;
+	private String captchaKey;
+	private String captchaValue;
 	private int column;
 }

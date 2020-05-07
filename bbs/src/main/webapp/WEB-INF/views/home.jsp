@@ -91,7 +91,9 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                	<img src="/1588330279820.jpg">
+                	<input type="hidden" name="captchaKey" value="${key}"/>
+                	<img src="/captcha/${captchaImage}.jpg" style="height:150px;">
+                	<input class="form-control" type="text" name="captchaValue" style="width: 50%"/>
                   	<button type="button" class="login-btn btn btn-primary">Submit</button>
                 </div>
               </form>
