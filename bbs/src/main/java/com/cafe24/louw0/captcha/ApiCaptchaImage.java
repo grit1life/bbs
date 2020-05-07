@@ -13,10 +13,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import com.cafe24.louw0.interceptor.CommonInterceptor;
 import com.cafe24.louw0.vo.CaptchaVo;
 
 public class ApiCaptchaImage {
-	 public String captchaImage(String key) {
+	 public String captchaImage(HttpServletRequest request, String key) {
 		 	CaptchaVo captchaVo = new CaptchaVo();
 		 	String clientId = captchaVo.getClientId(); //애플리케이션 클라이언트 아이디값";
 	        String clientSecret = captchaVo.getClientSecret(); 	//애플리케이션 클라이언트 시크릿값";
@@ -27,12 +28,12 @@ public class ApiCaptchaImage {
 	        Map<String, String> requestHeaders = new HashMap<>();
 	        requestHeaders.put("X-Naver-Client-Id", clientId);
 	        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-	        String responseBody = get(apiURL,requestHeaders);
+	        String responseBody = get(request, apiURL,requestHeaders);
 
 	        return responseBody;
 	    }
 
-	    public String get(String apiUrl, Map<String, String> requestHeaders){
+	    public String get(HttpServletRequest request, String apiUrl, Map<String, String> requestHeaders){
 	        HttpURLConnection con = connect(apiUrl);
 	        try {
 	            con.setRequestMethod("GET");
@@ -42,7 +43,7 @@ public class ApiCaptchaImage {
 
 	            int responseCode = con.getResponseCode();
 	            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-	                return getImage(con.getInputStream());
+	                return getImage(request, con.getInputStream());
 	            } else { // 에러 발생
 	                return error(con.getErrorStream());
 	            }
@@ -64,26 +65,29 @@ public class ApiCaptchaImage {
 	        }
 	    }
 
-	    private String getImage(InputStream is){
-	        int read;
+	    private String getImage(HttpServletRequest request, InputStream is){
+	    	
+	    	int read;
 	        byte[] bytes = new byte[1024];
 	        // 랜덤한 이름으로  파일 생성
-	        Path folderPath = Paths.get("/captcah/");
-	        folderPath = folderPath.toAbsolutePath();
-	        File folder = new File(folderPath.toString());
+	        
+	        Path serverPath = CommonInterceptor.SERVER_REAL_PATH;	        
+	        File folder = new File(serverPath.toAbsolutePath().toString() + "/resources/captcha");
+	        
 	        if(!folder.exists()) {
 	        	folder.mkdir();
-	        }
-	        String filename = Long.valueOf(new Date().getTime()).toString();
-	        Path path = Paths.get("/captcha/"+filename+".jpg");
-	        path = path.toAbsolutePath();
-	        System.out.println(path);
-	        File f = new File(path.toString());
+	        }	        
+	        
+	        String filename = Long.valueOf(new Date().getTime()).toString();	       
+	        File f = new File(folder.getPath(), filename+".jpg");
+	        
+	        System.out.println(f.getPath());
+	        
 	        try(OutputStream outputStream = new FileOutputStream(f)){
 	            f.createNewFile();
 	            while ((read = is.read(bytes)) != -1) {
 	                outputStream.write(bytes, 0, read);
-	            }
+	            }      
 	            return filename;
 	        } catch (IOException e) {
 	            throw new RuntimeException("이미지 캡차 파일 생성에 실패 했습니다.",e);

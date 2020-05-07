@@ -92,7 +92,8 @@
 
                 <div class="card-footer">
                 	<input type="hidden" name="captchaKey" value="${key}"/>
-                	<img src="/captcha/${captchaImage}.jpg" style="height:150px;">
+                	
+                	<img src='<c:url value="/resources/captcha/${captchaImage}.jpg" />' style="height:150px;">
                 	<input class="form-control" type="text" name="captchaValue" style="width: 50%"/>
                   	<button type="button" class="login-btn btn btn-primary">Submit</button>
                 </div>
@@ -132,8 +133,8 @@
 		  }
 	  }).fail(function(){
 		  console.log(2)
-	  })
-  		
+	  });
+	    		
   	})
   </script>
   

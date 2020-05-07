@@ -39,14 +39,14 @@ public class HomeController {
 	public String home(HttpSession session, Model model, HttpServletRequest request) {
 		String sId = (String) session.getAttribute("sId");
 		model.addAttribute("sId", sId);
-		Map<String, String> map = getCaptcha();
+		Map<String, String> map = getCaptcha(request);
 		model.addAttribute("key", map.get("key"));
 		model.addAttribute("captchaImage", map.get("image"));
 		
 		return "home";
 	}
 	
-	public Map<String, String> getCaptcha() {
+	public Map<String, String> getCaptcha(HttpServletRequest request) {
 		
 		Gson gson = new Gson();
 		ApiCaptchaNKey aKey = new ApiCaptchaNKey();
@@ -56,7 +56,7 @@ public class HomeController {
 		
 		map = gson.fromJson(captchaKey, map.getClass());
 		captchaKey = map.get("key");
-		map.put("image", aImage.captchaImage(captchaKey));
+		map.put("image", aImage.captchaImage(request, captchaKey));
 		return map;
 	}
 	

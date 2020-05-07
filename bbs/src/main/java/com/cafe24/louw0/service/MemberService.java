@@ -57,7 +57,6 @@ public class MemberService {
 		 HttpSession session = request.getSession();
 		 ApiCaptchaNkeyResult captchaResult = new ApiCaptchaNkeyResult();
 		 
-		 
 		 String cResult = captchaResult.captchakeyResult(member.getCaptchaKey(), member.getCaptchaValue());
 		 map = gson.fromJson(cResult, Map.class);
 
